@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: #121212;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: #1e1e1e;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 2px 0 5px rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .logo i {
+            font-size: 24px;
+            color: #007bff;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Chat Box */
+        .chat-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #555 #1e1e1e;
+            padding-bottom: 60px;
+        }
+
+        .chat-box::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-box::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 10px;
+        }
+
+        /* Messages */
+        .message {
+            display: flex;
+            align-items: flex-start;
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            gap: 10px;
+        }
+
+        .user-message {
+            background: #007bff;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .bot-message {
+            background: #333;
+            color: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        .message i {
+            font-size: 16px;
+        }
+
+        /* Input Bar */
+        .input-container {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #1e1e1e;
+            border-radius: 8px;
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            right: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: #333;
+            color: white;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        button {
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            width: 100px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fas fa-robot"></i>
+            <span>AI Chatbot</span>
+        </div>
+    </div>
+
+    <!-- Chat Section -->
+    <div class="chat-container">
+        <div id="chat-box" class="chat-box"></div>
+
+        <!-- Input Bar -->
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+    <script>
+        var socket = io("http://127.0.0.1:5000");
+
+        socket.on("connect", function() {
+            console.log("Connected to server");
+        });
+
+        socket.on("message", function(data) {
+            console.log("Received:", data);
+            let chatBox = document.getElementById("chat-box");
+            let msgDiv = document.createElement("div");
+            let icon = document.createElement("i");
+
+            if (data.type === "bot") {
+                msgDiv.classList.add("message", "bot-message");
+                icon.classList.add("fas", "fa-robot");
+            } else {
+                msgDiv.classList.add("message", "user-message");
+                icon.classList.add("fas", "fa-user");
+            }
+
+            msgDiv.appendChild(icon);
+            msgDiv.appendChild(document.createTextNode(" " + data.content));
+            chatBox.appendChild(msgDiv);
+
+            // Auto-scroll to the bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        function sendMessage() {
+            let input = document.getElementById("user-input");
+            let message = input.value.trim();
+            
+            if (message) {
+                socket.emit("chat", { message: message });
+                input.value = "";
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+flask
+langchain-openai
+langchain_mistralai
+flask_socketio
