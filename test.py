@@ -1,7 +1,7 @@
 from langchain_mistralai import ChatMistralAI
 
 # Your API Key
-api_key = "rTZD2HoYGOZ14S80IQO1RIibXJgz6wYL"
+api_key = "use your own api key"
 
 # Initialize the model
 llm = ChatMistralAI(model_name="mistral-tiny", api_key=api_key)
