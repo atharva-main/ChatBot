@@ -7,7 +7,7 @@ api_key = "rTZD2HoYGOZ14S80IQO1RIibXJgz6wYL"
 llm = ChatMistralAI(model_name="mistral-tiny", api_key=api_key)
 
 # # Test prompt
-# test_prompt = "Hello! Can you confirm if you are responding correctly?"
+# test_prompt = "Hello! tell me about this model?"
 
 # # Generate response
 # try:
