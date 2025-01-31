@@ -4,11 +4,12 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationChain
 from langchain.schema import HumanMessage, AIMessage
 from langchain_mistralai import ChatMistralAI
+from apikey import apikey
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-API_KEY = "use your own api key"
+API_KEY = apikey()
 
 # Initialize the Mistral AI model
 llm = ChatMistralAI(model_name="mistral-tiny", api_key=API_KEY)
@@ -54,7 +55,7 @@ def handle_chat(data):
     memory.chat_memory.add_ai_message(response_text)
 
     # Emit messages back to the client
-    emit('message', {'type': 'user', 'content': user_input})
+    #emit('message', {'type': 'user', 'content': user_input})
     emit('message', {'type': 'bot', 'content': response_text})
 
 @socketio.on('disconnect')

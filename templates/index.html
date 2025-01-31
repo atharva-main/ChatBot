@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Chatbot</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
     <style>
         /* General Reset */
         * {
@@ -89,6 +90,9 @@
             border-radius: 10px;
             font-size: 14px;
             gap: 10px;
+            word-wrap: break-word;
+            white-space: pre-wrap; /* Preserves formatting while allowing wrapping */
+            overflow-wrap: break-word;
         }
 
         .user-message {
@@ -167,6 +171,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+    
     <script>
         var socket = io("http://127.0.0.1:5000");
 
@@ -176,24 +181,7 @@
 
         socket.on("message", function(data) {
             console.log("Received:", data);
-            let chatBox = document.getElementById("chat-box");
-            let msgDiv = document.createElement("div");
-            let icon = document.createElement("i");
-
-            if (data.type === "bot") {
-                msgDiv.classList.add("message", "bot-message");
-                icon.classList.add("fas", "fa-robot");
-            } else {
-                msgDiv.classList.add("message", "user-message");
-                icon.classList.add("fas", "fa-user");
-            }
-
-            msgDiv.appendChild(icon);
-            msgDiv.appendChild(document.createTextNode(" " + data.content));
-            chatBox.appendChild(msgDiv);
-
-            // Auto-scroll to the bottom
-            chatBox.scrollTop = chatBox.scrollHeight;
+            appendMessage(data.content, data.type);
         });
 
         function sendMessage() {
@@ -201,7 +189,13 @@
             let message = input.value.trim();
             
             if (message) {
+                // Show the user's message immediately
+                appendMessage(message, "user");
+
+                // Send message to the server
                 socket.emit("chat", { message: message });
+
+                // Clear input field
                 input.value = "";
             }
         }
@@ -210,6 +204,31 @@
             if (event.key === "Enter") {
                 sendMessage();
             }
+        }
+
+        function appendMessage(content, type) {
+            let chatBox = document.getElementById("chat-box");
+            let msgDiv = document.createElement("div");
+            let icon = document.createElement("i");
+            let textElement = document.createElement("div"); // Using div instead of pre
+
+            if (type === "bot") {
+                msgDiv.classList.add("message", "bot-message");
+                icon.classList.add("fas", "fa-robot");
+            } else {
+                msgDiv.classList.add("message", "user-message");
+                icon.classList.add("fas", "fa-user");
+            }
+
+            textElement.textContent = content;
+            textElement.style.whiteSpace = "pre-wrap"; // Preserves line breaks and prevents overflow
+
+            msgDiv.appendChild(icon);
+            msgDiv.appendChild(textElement);
+            chatBox.appendChild(msgDiv);
+
+            // Auto-scroll to the bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
     </script>
 
