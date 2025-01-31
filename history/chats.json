@@ -1,0 +1,36 @@
+{
+  "72425c17-db85-429a-9978-33e3c822ec1e": {
+    "title": "hii",
+    "created_at": "2025-01-31T20:52:28.477344",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hii",
+        "timestamp": "2025-01-31T20:52:30.586765"
+      },
+      {
+        "role": "assistant",
+        "content": "Hello there! It's nice to meet you. I'm here to help answer your questions and engage in a friendly conversation. How can I assist you today? Is there a specific topic you're interested in, or just looking to chat? I can share some fun facts, trivia, or answer any questions you have. I'm programmed to provide detailed and truthful responses, so feel free to ask anything!",
+        "timestamp": "2025-01-31T20:52:31.637257"
+      }
+    ],
+    "user_id": null
+  },
+  "f0db2b38-c5d6-4136-a2e4-42a37dff5378": {
+    "title": "hii",
+    "created_at": "2025-01-31T20:56:19.275868",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hii",
+        "timestamp": "2025-01-31T20:56:21.444450"
+      },
+      {
+        "role": "assistant",
+        "content": "Hello there! It's nice to meet you. I'm here to assist you with any questions or information you might need. How can I help you today? Is there a specific topic or question you have in mind? I'm fully operational and ready to provide detailed responses based on my context. I've been trained on a wide range of subjects, from general knowledge to more specific topics like science, history, technology, and more. So, feel free to ask anything!",
+        "timestamp": "2025-01-31T20:56:22.346288"
+      }
+    ],
+    "user_id": null
+  }
+}
