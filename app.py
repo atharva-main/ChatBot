@@ -14,7 +14,7 @@ app.secret_key = os.urandom(24)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 API_KEY = apikey()
-CHATS_FILE = "history/chats.json"
+CHATS_FILE = "chats.json"
 
 # Initialize the Mistral AI model
 llm = ChatMistralAI(model_name="mistral-tiny", api_key=API_KEY)
